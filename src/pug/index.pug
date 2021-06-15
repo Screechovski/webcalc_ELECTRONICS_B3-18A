@@ -1,0 +1,72 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="preconnect" href="https://fonts.gstatic.com")
+        link(href="https://fonts.googleapis.com/css2?family=Electrolize&display=swap" rel="stylesheet")
+        link(href="https://fonts.googleapis.com/css2?family=PT+Mono&display=swap" rel="stylesheet")
+        link(rel="stylesheet", href="../../font/font.css")
+        link(rel="stylesheet", href="../font/font.css")
+        title Calc
+    body
+        main.calc
+            .calc__inner
+                .calc__header
+                    .calc__title 
+                        h1 Электроника Б3-18
+                    .calc__screen
+                        span
+                            .overflow#screenOverflow(style="opacity: 0") •
+                            .minus#screenMinus(style="opacity: 0") -
+                        input(type="text", id="calc-screen", size="8", readonly)
+                .calc__flags
+                    .calc__flag.calc-flag#flag-power
+                        .calc-flag__top Вкл
+                        .slider.calc-flag__slider
+                            .slider__item
+                        .calc-flag__bottom Откл                    
+                    .calc__flag.calc-flag#radian
+                        .calc-flag__top Град
+                        .slider.calc-flag__slider
+                            .slider__item
+                        .calc-flag__bottom Рад
+                .calc__body
+                    .calc__buttons
+                        each item in [{value:7,valueF:'ln',operation:'number',operationF:'ln',},{value:8,valueF:'lg',operation:'number',operationF:'lg',},{value:9,valueF:'√',operation:'number',operationF:'sqrt'},{value:'<->',valueF:'x<->п',operation:'swap',operationF:'swapF'},{value:'C',valueF:'cf',operation:'clear',operationF:'clearF'},{value:4,valueF:'e<sup>x</sup>',operation:'number',operationF:'epowx'},{value:5,valueF:'10<sup>x</sup>',operation:'number',operationF:'tenpowx'},{value:6,valueF:'x<sup>y</sup>',operation:'number',operationF:'xpowy'},{value:'=',valueF:'ИП',operation:'result',operationF:'show'},{value:'/-/',valueF:'ЗАП',operation:'numminus',operationF:'save'},{value:1,valueF:'sin',operation:'number',operationF:'sin'},{value:2,valueF:'cos',operation:'number',operationF:'cos'},{value:3,valueF:'tg',operation:'number',operationF:'tg'},{value:'*',valueF:'π',operation:'multiply',operationF:'pi'},{value:'/',valueF:'1/x',operation:'divide',operationF:'1dividex'},{value:0,valueF:'arc',operation:'number',operationF:'arc'},{value:',',valueF:'п+x<sup>2</sup>',operation:'dot',operationF:'piplusxpow2'},{value:'F',valueF:'',operation:'onf',operationF:'offf'},{value:'+',valueF:'П+',operation:'plus',operationF:'memplus'},{value:'-',valueF:'П-',operation:'minus',operationF:'memminus'}]
+                            if (item.value == '<->' || item.value == '*' || item.value == 'C' || item.value == '=' || item.value == '/-/' || item.value == '-' || item.value == '/' || item.value == '+')
+                                .calc-button.calc-button--red(data-value=item.value, data-value-f=item.valueF, data-operation=item.operation, data-operation-f=item.operationF)
+                                    .calc-button__label
+                                    button.calc-button__button=item.value
+                            else if (item.value == 'F')
+                                .calc-button.calc-button--c-red#calcButtonF(data-value=item.value, data-value-f=item.valueF, data-operation=item.operation, data-operation-f=item.operationF)
+                                    .calc-button__label
+                                    button.calc-button__button=item.value
+                            else
+                                .calc-button(data-value=item.value, data-value-f=item.valueF, data-operation=item.operation, data-operation-f=item.operationF)
+                                    .calc-button__label
+                                    button.calc-button__button=item.value
+            .calc__history.c-history.c-history--left
+                .c-history__inner
+                    button.c-history__arrow#historyBtn
+                        <svg x="0px" y="0px" width="612.02px" height="612.02px" viewBox="0 0 612.02 612.02" style="enable-background:new 0 0 612.02 612.02;" xml:space="preserve">
+                            <path d="M596.96,269.674L342.381,15.094c-20.079-20.079-52.644-20.079-72.723,0c-20.079,20.079-20.079,52.644,0,72.723 L487.852,306.01L269.658,524.202c-20.079,20.079-20.079,52.644,0,72.723s52.644,20.079,72.723,0L596.96,342.346 C617.039,322.317,617.039,289.753,596.96,269.674z M290.858,254.258L88.744,41.238c-20.309-21.378-53.204-21.378-73.513,0 s-20.309,56.058,0,77.462l165.371,174.289L15.231,467.278c-20.309,21.379-20.309,56.083,0,77.462s53.204,21.379,73.513,0 L290.858,331.72C311.167,310.342,311.167,275.662,290.858,254.258z"/>
+                        </svg>
+                    ul.c-history__list 
+            .calc__history.c-history.c-history--right
+                 .c-history__inner
+                    button.c-history__arrow#memoryBtn
+                        <svg x="0px" y="0px" width="612.02px" height="612.02px" viewBox="0 0 612.02 612.02" style="enable-background:new 0 0 612.02 612.02;" xml:space="preserve">
+                            <path d="M596.96,269.674L342.381,15.094c-20.079-20.079-52.644-20.079-72.723,0c-20.079,20.079-20.079,52.644,0,72.723 L487.852,306.01L269.658,524.202c-20.079,20.079-20.079,52.644,0,72.723s52.644,20.079,72.723,0L596.96,342.346 C617.039,322.317,617.039,289.753,596.96,269.674z M290.858,254.258L88.744,41.238c-20.309-21.378-53.204-21.378-73.513,0 s-20.309,56.058,0,77.462l165.371,174.289L15.231,467.278c-20.309,21.379-20.309,56.083,0,77.462s53.204,21.379,73.513,0 L290.858,331.72C311.167,310.342,311.167,275.662,290.858,254.258z"/>
+                        </svg>   
+                    .c-history__logs.logs
+                        .logs__item Рабочий регистр: 
+                            span#workReg 0
+                        .logs__item Регистр памяти:
+                            span#memory 0
+                        .logs__item Первое число:
+                            span#firstNum
+                        .logs__item Второе число:
+                            span#secondNum
+

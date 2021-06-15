@@ -1,0 +1,40 @@
+{
+  "name": "frontend-2021-03",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack serve --mode development"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.13.14",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.13.12",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.4",
+    "file-loader": "^6.2.0",
+    "html-loader": "^2.1.2",
+    "html-webpack-plugin": "^5.3.1",
+    "html-webpack-pug-plugin": "^3.0.0",
+    "pug": "^3.0.2",
+    "pug-loader": "^2.4.0",
+    "sass": "^1.32.12",
+    "sass-loader": "^11.0.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.36.2",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "browserslist": "> 1%, not dead",
+  "dependencies": {
+    "autoprefixer": "^10.2.5",
+    "jquery": "^3.6.0",
+    "normalize.css": "^8.0.1",
+    "postcss-loader": "^5.3.0",
+    "reset.css": "^2.0.2"
+  }
+}
