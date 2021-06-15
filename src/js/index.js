@@ -129,8 +129,11 @@ class Сalc{ // класс для хронения всех реактивных
         togglePower(value);
 
         if (value) {
+            debugger
             this.clearAll()
         }
+        
+        toggleScreenError(false);
         this._power = value;
     }
     get F(){
