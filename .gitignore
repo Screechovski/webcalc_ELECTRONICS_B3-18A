@@ -1,7 +1,7 @@
 # Build and Release Folders
 package-lock.json
-node-modules/*
-node-modules/
+node_modules/*
+node_modules/
 
 # Other files and folders
 .settings/
