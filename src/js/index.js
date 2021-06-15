@@ -14,17 +14,18 @@ class Сalc{ // класс для хронения всех реактивных
     }
     dotActive = false; // поставили символ точки
     operationLogs = null; // записывает последнюю операцию
+    triangleArc = false;
     lastCalculatedNum = null; // последнее число написанное пользователем
     calculated = false;
 
     clearAll(){ // метод очистки всего калькулятора
-        toggleScreenError(false); // убираем переполнение
-        toggleScreenMinus(false); // убираем знак минуса
         this.screenValue = '0'; // присваиваем полю screenValue '0'
         this._operationNumber = null; // переменная числа для операции
         this._operationName = null; // переменная для названия операции
         this._screenWorkValue = 0;
         this.calculated = false;
+        toggleScreenMinus(false); // убираем знак минуса
+        toggleScreenError(false); // убираем переполнение
     }
     get screenWorkValue(){
         return this._screenWorkValue;
@@ -154,7 +155,7 @@ window.calc = myCalc;
  */
 const shorterNum = paramNum => {// отрезает лишнее от числа, если длина числа больше нужно
     console.log(typeof paramNum)
-    paramNum = Number(Number(paramNum).toFixed(8));
+    paramNum = Number(Number(paramNum).toFixed(7));
     let stringParamNum = paramNum.toString();
 
     if (stringParamNum.indexOf('.') != -1) {// проверка точки в числе
@@ -376,7 +377,18 @@ const toggleRadian = flag => { // функция включения/выключ
  * @returns
  */
 const convertToRadians = (degress) => { //обычная функция которая по формуле конвертирует градусы в радианы, на входе градусы, на выходе радианы
+    degress = Number(degress);
     return (degress * Math.PI) / 180;
+}
+
+/**
+ * Вспомогательная функция для конвертации радиан в градусы
+ * @param {Number} degress
+ * @returns
+ */
+ const convertToDegress = (rad) => {
+    rad = Number(rad);
+    return (rad * 180) / Math.PI;
 }
 
 /**
@@ -507,7 +519,7 @@ const calcButtonClick = e => {
                     result = shorterNum(Math.sqrt(oldVal));
                     myCalc.screenValue = result;
 
-                    addHistoryItem(`√${oldVal} = ${myCalc.screenValue}`);
+                    addHistoryItem(`sqrt${oldVal} = ${myCalc.screenValue}`);
 
                     console.log(oldVal, `sqrt(${oldVal})`, result);
                     break;
@@ -532,25 +544,25 @@ const calcButtonClick = e => {
                     console.log(oldVal, `10^${oldVal}`, result);
                     break;
                 case 'arc':
-                    myCalc.operationLogs = 'arc';
+                    myCalc.triangleArc = true;
 
                     console.log(`arc`);
                     break;
                 case 'sin':
                     oldVal = myCalc.screenValue;
                     setFirstNum(oldVal);
-
+                    // myCalc.radians |1| myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)
                     // debugger
 
-                    if (myCalc.operationLogs == 'arc') {
+                    if (myCalc.triangleArc) {
                         result = shorterNum(Math.asin(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)));
                         myCalc.screenValue = result;
                         myCalc.calculated = true;
 
                         addHistoryItem(`arcsin(${oldVal}) = ${myCalc.screenValue}`);
                         console.log(oldVal, `arcsin(${oldVal})`, result);
-
                         myCalc.operationLogs = 'arcsin';
+                        myCalc.triangleArc = false;
                     } else {
                         result = shorterNum(Math.sin(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)));
                         myCalc.screenValue = result;
@@ -563,7 +575,7 @@ const calcButtonClick = e => {
                 case 'cos':
                     oldVal = myCalc.screenValue;
                     setFirstNum(oldVal);
-                    if (myCalc.operationLogs == 'arc') {                        
+                    if (myCalc.triangleArc) {                        
                         result = shorterNum(Math.acos(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)));
                         myCalc.screenValue = result;
                         myCalc.calculated = true;
@@ -571,6 +583,7 @@ const calcButtonClick = e => {
                         addHistoryItem(`arccos(${oldVal}) = ${myCalc.screenValue}`);
                         console.log(oldVal, `arccos(${oldVal})`, result);
 
+                        myCalc.triangleArc = false;
                         myCalc.operationLogs = 'arccos';
                     } else {
                         result = shorterNum(Math.cos(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)));
@@ -584,15 +597,17 @@ const calcButtonClick = e => {
                 case 'tg':
                     oldVal = myCalc.screenValue;
                     setFirstNum(oldVal);
+                    debugger;
 
-                    if (myCalc.operationLogs == 'arc') {
-                        result = shorterNum(Math.atan(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)))
+                    if (myCalc.triangleArc) {
+                        result = shorterNum(myCalc.radians || myCalc.radians == undefined ? Math.atan(oldVal) : convertToDegress(Math.atan(oldVal)));
                         myCalc.screenValue = result;
                         myCalc.calculated = true;
 
                         addHistoryItem(`artg(${oldVal}) = ${myCalc.screenValue}`);
                         console.log(oldVal, `artg(${oldVal})`, result);
 
+                        myCalc.triangleArc = false;
                         myCalc.operationLogs = 'artg';
                     } else {
                         result = shorterNum(Math.tan(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)));
@@ -729,8 +744,7 @@ const calcButtonClick = e => {
 
 
             }
-
-            myCalc.F = false;
+            if (operationF != 'arc')  myCalc.F = false;
         }
     }
 }
