@@ -413,7 +413,7 @@ const calcButtonClick = e => {
             // если кнопка F не нажата
             switch (operation) {
                 case 'number':
-                    let wr = myCalc.screenValue;
+                    let wr = myCalc.screenValue.toString();
                     let btnValue = button.getAttribute('data-value');
                     
                     if (myCalc.calculated) {
@@ -540,17 +540,21 @@ const calcButtonClick = e => {
                     oldVal = myCalc.screenValue;
                     setFirstNum(oldVal);
 
+                    // debugger
+
                     if (myCalc.operationLogs == 'arc') {
-                        result = shorterNum(Math.asin(myCalc.radians ? oldVal : convertToRadians(oldVal)));
+                        result = shorterNum(Math.asin(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)));
                         myCalc.screenValue = result;
+                        myCalc.calculated = true;
 
                         addHistoryItem(`arcsin(${oldVal}) = ${myCalc.screenValue}`);
                         console.log(oldVal, `arcsin(${oldVal})`, result);
 
                         myCalc.operationLogs = 'arcsin';
                     } else {
-                        result = shorterNum(Math.sin(myCalc.radians ? oldVal : convertToRadians(oldVal)));
+                        result = shorterNum(Math.sin(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)));
                         myCalc.screenValue = result;
+                        myCalc.calculated = true;
 
                         addHistoryItem(`sin(${oldVal}) = ${myCalc.screenValue}`);
                         console.log(oldVal, `sin(${oldVal})`, result);
@@ -559,18 +563,19 @@ const calcButtonClick = e => {
                 case 'cos':
                     oldVal = myCalc.screenValue;
                     setFirstNum(oldVal);
-
-                    if (myCalc.operationLogs == 'arc') {
-                        result = shorterNum(Math.acos(myCalc.radians ? oldVal : convertToRadians(oldVal)));
+                    if (myCalc.operationLogs == 'arc') {                        
+                        result = shorterNum(Math.acos(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)));
                         myCalc.screenValue = result;
+                        myCalc.calculated = true;
 
                         addHistoryItem(`arccos(${oldVal}) = ${myCalc.screenValue}`);
                         console.log(oldVal, `arccos(${oldVal})`, result);
 
                         myCalc.operationLogs = 'arccos';
                     } else {
-                        result = shorterNum(Math.cos(myCalc.radians ? oldVal : convertToRadians(oldVal)));
+                        result = shorterNum(Math.cos(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)));
                         myCalc.screenValue = result;
+                        myCalc.calculated = true;
 
                         addHistoryItem(`cos(${oldVal}) = ${myCalc.screenValue}`);
                         console.log(oldVal, `cos(${oldVal})`, result);
@@ -581,16 +586,18 @@ const calcButtonClick = e => {
                     setFirstNum(oldVal);
 
                     if (myCalc.operationLogs == 'arc') {
-                        result = shorterNum(Math.atan(myCalc.radians ? oldVal : convertToRadians(oldVal)))
+                        result = shorterNum(Math.atan(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)))
                         myCalc.screenValue = result;
+                        myCalc.calculated = true;
 
                         addHistoryItem(`artg(${oldVal}) = ${myCalc.screenValue}`);
                         console.log(oldVal, `artg(${oldVal})`, result);
 
                         myCalc.operationLogs = 'artg';
                     } else {
-                        result = shorterNum(Math.tan(myCalc.radians ? oldVal : convertToRadians(oldVal)));
+                        result = shorterNum(Math.tan(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)));
                         myCalc.screenValue = result;
+                        myCalc.calculated = true;
 
                         addHistoryItem(`tg(${oldVal}) = ${myCalc.screenValue}`);
                         console.log(oldVal, `tg(${oldVal})`, result);
