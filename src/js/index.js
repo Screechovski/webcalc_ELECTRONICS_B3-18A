@@ -127,6 +127,7 @@ class Сalc{ // класс для хронения всех реактивных
     }
     set power(value){
         togglePower(value);
+        changePowerHTML(value);
 
         if (value) {
             debugger
@@ -142,6 +143,7 @@ class Сalc{ // класс для хронения всех реактивных
     set F(value){
         this._F = value;
 
+        changeFHTML(value);
         toggleF(value);
         changeCalcButtonsVal(value);
     }
@@ -285,6 +287,25 @@ const changeCalcButtonsVal = (flag) => {
             }
         }
     })
+}
+
+const changePowerHTML = flag => {
+    const $calcPower = document.getElementById('calcPower');
+
+    if (flag) {
+        $calcPower.innerText = 'ON';
+    } else {
+        $calcPower.innerText = 'OFF';
+    }
+}
+
+const changeFHTML = flag => {
+    const $calcF = document.getElementById('calcF');
+    if (flag) {
+        $calcF.innerText = 'ON';
+    } else {
+        $calcF.innerText = 'OFF';
+    }
 }
 
 /**
@@ -642,6 +663,7 @@ const calcButtonClick = e => {
                 case 'save':
                     oldVal = myCalc.screenValue;
                     myCalc.memoryNumber = Number(oldVal);
+                    myCalc.calculated = true;
 
                     addHistoryItem(`${myCalc.screenValue} ЗАП`);
 
