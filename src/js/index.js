@@ -606,7 +606,7 @@ const calcButtonClick = e => {
                     oldVal = myCalc.screenValue;
                     setFirstNum(oldVal);
                     if (myCalc.triangleArc) {
-                        result = shorterNum(myCalc.radians || myCalc.radians == undefined ? Math.asin(oldVal) : convertToDegress(Math.atan(oldVal)));
+                        result = shorterNum(myCalc.radians || myCalc.radians == undefined ? Math.asin(oldVal) : convertToDegress(Math.asin(oldVal)));
                         myCalc.screenValue = result;
                         myCalc.calculated = true;
 
@@ -627,7 +627,7 @@ const calcButtonClick = e => {
                     oldVal = myCalc.screenValue;
                     setFirstNum(oldVal);
                     if (myCalc.triangleArc) {                        
-                        result = shorterNum(myCalc.radians || myCalc.radians == undefined ? Math.acos(oldVal) : convertToDegress(Math.atan(oldVal)));
+                        result = shorterNum(myCalc.radians || myCalc.radians == undefined ? Math.acos(oldVal) : convertToDegress(Math.acos(oldVal)));
                         myCalc.screenValue = result;
                         myCalc.calculated = true;
 
