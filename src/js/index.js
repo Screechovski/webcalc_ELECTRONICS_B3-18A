@@ -130,7 +130,6 @@ class Сalc{ // класс для хронения всех реактивных
         changePowerHTML(value);
 
         if (value) {
-            debugger
             this.clearAll()
         }
         
@@ -159,19 +158,23 @@ window.calc = myCalc;
  * @returns {Number}
  */
 const shorterNum = paramNum => {// отрезает лишнее от числа, если длина числа больше нужно
-    console.log(typeof paramNum)
-    paramNum = Number(Number(paramNum).toFixed(7));
-    let stringParamNum = paramNum.toString();
-
-    if (stringParamNum.indexOf('.') != -1) {// проверка точки в числе
-        toggleScreenError(stringParamNum.length > 9);// если строка больше 8 символов, вызвать toggleScreenError(true), если все в порядке toggleScreenError(false)
-        if (stringParamNum.length > 9) {
-            return Number(stringParamNum.substring(0, 9)); // если строка больше 8 символов, отрезаем лишнее и возврощаем число
-        }
+    if (isNaN(paramNum)) {
+        toggleScreenError(true); 
+        console.warn('message');
     } else {
-        toggleScreenError(stringParamNum.length > 8);
-        if (stringParamNum.length > 8) {
-            return Number(stringParamNum.substring(0, 8));
+        paramNum = myRound(paramNum);
+        let stringParamNum = paramNum.toString();
+    
+        if (stringParamNum.indexOf('.') != -1) {// проверка точки в числе
+            toggleScreenError(stringParamNum.length > 9);// если строка больше 8 символов, вызвать toggleScreenError(true), если все в порядке toggleScreenError(false)
+            if (stringParamNum.length > 9) {
+                return Number(stringParamNum.substring(0, 9)); // если строка больше 8 символов, отрезаем лишнее и возврощаем число
+            }
+        } else {
+            toggleScreenError(stringParamNum.length > 8);
+            if (stringParamNum.length > 8) {
+                return Number(stringParamNum.substring(0, 8));
+            }
         }
     }
     return paramNum;
@@ -396,6 +399,28 @@ const toggleRadian = flag => { // функция включения/выключ
 }
 
 /**
+ * Decimal adjustment of a number.
+ * @param {String}  type  The type of adjustment.
+ * @param {Number}  value The number.
+ * @param {Integer} exp   The exponent (the 10 logarithm of the adjustment base).
+ * @returns {Number} The adjusted value.
+ */
+ const decimalAdjust = (value) => {
+    const exp = -7;
+    value = +value;
+    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+        return NaN;
+    }
+    value = value.toString().split('e');
+    value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+    value = value.toString().split('e');
+    return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+}
+  
+// Decimal round
+const myRound = (value) => decimalAdjust(value);
+
+/**
  * Вспомогательная функция для конвертации градусов в радианы
  * @param {Number} degress
  * @returns
@@ -522,6 +547,7 @@ const calcButtonClick = e => {
                     setFirstNum(oldVal);
                     result = shorterNum(Math.log(oldVal))
                     myCalc.screenValue = result;
+                    myCalc.calculated = true;
 
                     addHistoryItem(`ln(${oldVal}) = ${myCalc.screenValue}`);
 
@@ -532,6 +558,7 @@ const calcButtonClick = e => {
                     setFirstNum(oldVal);
                     result = shorterNum(Math.log10(oldVal));
                     myCalc.screenValue = result;
+                    myCalc.calculated = true;
 
                     addHistoryItem(`lg(${oldVal}) = ${myCalc.screenValue}`);
 
@@ -542,6 +569,7 @@ const calcButtonClick = e => {
                     setFirstNum(oldVal);
                     result = shorterNum(Math.sqrt(oldVal));
                     myCalc.screenValue = result;
+                    myCalc.calculated = true;
 
                     addHistoryItem(`sqrt${oldVal} = ${myCalc.screenValue}`);
 
@@ -552,6 +580,7 @@ const calcButtonClick = e => {
                     setFirstNum(oldVal);
                     result = shorterNum(Math.pow(Math.E, oldVal));
                     myCalc.screenValue = result;
+                    myCalc.calculated = true;
 
                     addHistoryItem(`e<sup>${oldVal}</sup> = ${myCalc.screenValue}`);
 
@@ -562,6 +591,7 @@ const calcButtonClick = e => {
                     setFirstNum(oldVal);
                     result = shorterNum(Math.pow(10, oldVal));
                     myCalc.screenValue = result;
+                    myCalc.calculated = true;
 
                     addHistoryItem(`10<sup>${oldVal}</sup> = ${myCalc.screenValue}`);
 
@@ -575,11 +605,8 @@ const calcButtonClick = e => {
                 case 'sin':
                     oldVal = myCalc.screenValue;
                     setFirstNum(oldVal);
-                    // myCalc.radians |1| myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)
-                    // debugger
-
                     if (myCalc.triangleArc) {
-                        result = shorterNum(Math.asin(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)));
+                        result = shorterNum(myCalc.radians || myCalc.radians == undefined ? Math.asin(oldVal) : convertToDegress(Math.atan(oldVal)));
                         myCalc.screenValue = result;
                         myCalc.calculated = true;
 
@@ -600,7 +627,7 @@ const calcButtonClick = e => {
                     oldVal = myCalc.screenValue;
                     setFirstNum(oldVal);
                     if (myCalc.triangleArc) {                        
-                        result = shorterNum(Math.acos(myCalc.radians || myCalc.radians == undefined ? oldVal : convertToRadians(oldVal)));
+                        result = shorterNum(myCalc.radians || myCalc.radians == undefined ? Math.acos(oldVal) : convertToDegress(Math.atan(oldVal)));
                         myCalc.screenValue = result;
                         myCalc.calculated = true;
 
@@ -621,7 +648,6 @@ const calcButtonClick = e => {
                 case 'tg':
                     oldVal = myCalc.screenValue;
                     setFirstNum(oldVal);
-                    debugger;
 
                     if (myCalc.triangleArc) {
                         result = shorterNum(myCalc.radians || myCalc.radians == undefined ? Math.atan(oldVal) : convertToDegress(Math.atan(oldVal)));
